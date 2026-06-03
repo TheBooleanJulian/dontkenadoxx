@@ -1,0 +1,53 @@
+name: CI/CD — DontKenaDoxx
+
+on:
+  push:
+    branches: [dev]
+  pull_request:
+    branches: [main]
+
+jobs:
+  smoke-test:
+    name: Smoke Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Syntax check — all Python files
+        run: python -m py_compile bot.py handlers/commands.py handlers/photo.py utils/analyzer.py utils/formatter.py
+
+      - name: Import check
+        env:
+          TELEGRAM_BOT_TOKEN: "dummy_token_for_import_check"
+          ANTHROPIC_API_KEY: "dummy_key_for_import_check"
+        run: python -c "from utils.analyzer import OSINT_SYSTEM_PROMPT; from utils.formatter import format_analysis; print('✅ Imports OK')"
+
+  auto-merge-to-main:
+    name: Auto-merge dev → main
+    needs: smoke-test
+    if: github.ref == 'refs/heads/dev' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Merge dev into main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout main
+          git merge dev --ff-only
+          git push origin main
+          echo "✅ Merged dev → main — Zeabur will pick this up automatically."
