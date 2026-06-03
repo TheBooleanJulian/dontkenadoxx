@@ -29,8 +29,8 @@ A Telegram bot that identifies the geographic location of any photo using Claude
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/TheBooleanJulian/dontkenadobxx.git
-cd dontkenadobxx
+git clone https://github.com/TheBooleanJulian/dontkenadoxx.git
+cd dontkenadoxx
 
 # 2. Install dependencies
 pip install -r requirements.txt
@@ -71,7 +71,7 @@ python bot.py
 ## 🏗️ Architecture
 
 ```
-dontkenadobxx/
+dontkenadoxx/
 ├── bot.py                     # Entry point, handler registration
 ├── handlers/
 │   ├── commands.py            # /start, /help

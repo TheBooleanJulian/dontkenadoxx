@@ -79,7 +79,7 @@ def format_analysis(data: dict) -> str:
     flavour   = CONFIDENCE_FLAVOUR[tier]
 
     lines = [
-        "🗺️ <b>DONTKENADOBXX ANALYSIS</b>",
+        "🗺️ <b>DONTKENADOXX ANALYSIS</b>",
         "",
         "📍 <b>LOCATION IDENTIFIED</b>",
         f"<code>{location}</code>",

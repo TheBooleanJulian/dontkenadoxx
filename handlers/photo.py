@@ -18,7 +18,7 @@ _user_cooldowns: dict[int, float] = {}
 COOLDOWN_SECONDS = 30  # seconds between analyses per user
 
 THINKING_MESSAGES = [
-    "🔍 <b>DONTKENADOBXX</b> is on the case...\n"
+    "🔍 <b>DONTKENADOXX</b> is on the case...\n"
     "<i>Scanning for text, signs, architecture, vegetation...</i>",
 
     "🧠 <b>Cross-referencing OSINT categories...</b>\n"
