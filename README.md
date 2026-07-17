@@ -1,49 +1,53 @@
-# 🗺️ DontKenaDoxx — OSINT Geolocation Telegram Bot
+<div align="center">
 
-> *"Don't kena doxxed — but here's how your photo gives away your location anyway."*
+# DontKenaDoxx
 
-A Telegram bot that identifies the geographic location of any photo using Claude Vision and systematic OSINT methodology. Analyzes 10 categories of visual evidence and returns a structured location report with confidence rating.
+**Telegram bot that geolocates any photo using Claude Vision and 10-category OSINT analysis.**
 
----
+![Python](https://img.shields.io/badge/-Python-3776AB?logo=python&logoColor=white)
+![Telegram](https://img.shields.io/badge/-Telegram-26A5E4?logo=telegram&logoColor=white)
+![Claude](https://img.shields.io/badge/-Claude%20API-D97757)
+![Zeabur](https://img.shields.io/badge/-Zeabur-6C5CE7)
+![License](https://img.shields.io/badge/license-MIT-00D4C8.svg)
 
-## ✨ Features
-
-- 📸 **Handles all photo types** — compressed, full-res documents, forwarded photos
-- 🔍 **10-category OSINT analysis** — text, architecture, roads, vegetation, vehicles, infrastructure, culture, environment, people, brands
-- 🎯 **Confidence scoring** — explicit percentage + label + color indicator
-- 📊 **Alternative locations** — top 3 possibilities with reasoning
-- 🏆 **Key evidence summary** — the 3 strongest determining clues
-- 🔎 **Notable OSINT finds** — any actionable specifics (readable signs, addresses, etc.)
-- ⏳ **Rate limiting** — 30s per user cooldown to prevent API burn
+</div>
 
 ---
 
-## 🛠️ Setup
+## What it does
 
-### Prerequisites
-- Python 3.12+
-- A Telegram bot token from [@BotFather](https://t.me/BotFather)
-- Anthropic API key
+DontKenaDoxx is a Telegram bot that takes any photo and tells you where it was taken — without needing GPS metadata. It passes the image to Claude Vision with a structured OSINT prompt covering 10 categories of visual evidence (text, architecture, vehicles, vegetation, culture, and more), then returns a formatted location report with a confidence score, top 3 alternative locations, and the strongest determining clues. Built for anyone curious about geolocation tradecraft or wanting to understand how much a photo gives away.
 
-### Local Development
+## Features
+
+- Handles compressed photos, full-res documents, and forwarded images
+- 10-category OSINT analysis: text/signage, architecture, roads, vegetation, vehicles, infrastructure, culture, environment, people, brands
+- Confidence scoring — explicit percentage, label, and color indicator
+- Top 3 alternative locations with reasoning
+- Key evidence summary — the 3 strongest determining clues
+- Notable OSINT finds — any actionable specifics such as readable addresses or license plates
+- Per-user rate limiting (30s cooldown) to prevent API burn
+
+## Tech Stack
+
+| Layer | Choice |
+|---|---|
+| Bot | python-telegram-bot (polling) |
+| AI | Claude API (Anthropic) |
+| Hosting | Zeabur (GitHub CI/CD, dev → main) |
+
+## Quick Start
 
 ```bash
-# 1. Clone the repo
 git clone https://github.com/TheBooleanJulian/dontkenadoxx.git
 cd dontkenadoxx
-
-# 2. Install dependencies
 pip install -r requirements.txt
-
-# 3. Set environment variables
 cp .env.example .env
-# Edit .env with your actual tokens
-
-# 4. Run
+# Edit .env with your tokens
 python bot.py
 ```
 
-### Environment Variables
+## Configuration
 
 | Variable | Required | Description |
 |---|---|---|
@@ -55,79 +59,45 @@ python bot.py
 - `claude-sonnet-4-6` — Fast, cost-effective (default)
 - `claude-opus-4-8` — Best accuracy, higher cost — recommended for serious OSINT
 
----
-
-## 🚀 Deployment (Zeabur)
-
-1. Push to GitHub
-2. Create new Zeabur project → deploy from GitHub repo
-3. Set environment variables in Zeabur dashboard
-4. Done — Zeabur auto-deploys on `main` branch push
-
-**CI/CD pipeline:** `git push origin dev` → GitHub Actions smoke test → auto-merge to `main` → Zeabur deploys
-
----
-
-## 🏗️ Architecture
+## Project Structure
 
 ```
 dontkenadoxx/
-├── bot.py                     # Entry point, handler registration
+├── bot.py                  # Entry point, handler registration
 ├── handlers/
-│   ├── commands.py            # /start, /help
-│   └── photo.py              # Photo handler + rate limiting
+│   ├── commands.py         # /start, /help
+│   └── photo.py            # Photo handler + rate limiting
 ├── utils/
-│   ├── analyzer.py           # Claude Vision + OSINT system prompt
-│   └── formatter.py          # Telegram HTML message formatting
-├── .github/workflows/ci.yml  # CI/CD pipeline
-├── Dockerfile                # Container deployment
+│   ├── analyzer.py         # Claude Vision + OSINT system prompt
+│   └── formatter.py        # Telegram HTML message formatting
+├── .github/workflows/      # CI/CD pipeline
+├── Dockerfile
 └── requirements.txt
 ```
 
-### OSINT Analysis Flow
+## Deployment
 
-```
-User sends photo
-       │
-       ▼
-Download image bytes
-       │
-       ▼
-Claude Vision API (10-category OSINT prompt)
-       │
-       ▼
-Parse JSON response
-       │
-       ▼
-Format → Telegram HTML message
-       │
-       ▼
-Edit status message with result
-```
+Deployed on Zeabur via GitHub Actions CI/CD. Push to `dev` triggers a smoke test, auto-merges to `main`, and Zeabur deploys from there. Set `TELEGRAM_BOT_TOKEN` and `ANTHROPIC_API_KEY` in the Zeabur dashboard environment variables.
 
----
+## Status / Roadmap
 
-## 🔍 OSINT Categories
+- [x] 10-category OSINT analysis via Claude Vision
+- [x] Confidence scoring and alternative locations
+- [x] Rate limiting per user
+- [x] Dockerised deployment on Zeabur
+- [ ] Reverse image search integration
+- [ ] `/history` command to review past analyses
 
-| # | Category | What it detects |
-|---|---|---|
-| 1 | 📝 Text & Signage | Language, scripts, business names, license plates |
-| 2 | 🏗️ Architecture | Style, materials, era, HDB vs private |
-| 3 | 🛣️ Road Infrastructure | LHD/RHD traffic, sign conventions, road markings |
-| 4 | 🌿 Vegetation | Plant species, terrain, climate zone |
-| 5 | 🚗 Vehicles | Car brands, plate formats, transport types |
-| 6 | ⚡ Infrastructure | Power poles, cabling, street lights |
-| 7 | 🕌 Cultural | Temples, mosques, flags, hawker centers |
-| 8 | ☁️ Environment | Weather, humidity, sun angle, season |
-| 9 | 👥 People | Ethnicity, clothing, cultural dress |
-| 10 | 🏪 Brands | Local chains, franchise adaptations |
+## Changelog
 
----
+- **2026-06-03** — Initial release: full bot with Claude Vision OSINT analysis, 10-category prompt, confidence scoring, rate limiting, Dockerfile, and CI/CD pipeline. Repo rename typo fix (dontkenadobxx → dontkenadoxx).
 
-## 📄 License
+## License
 
 MIT — use freely, credit appreciated.
 
 ---
 
-*Built by [@TheBooleanJulian](https://t.me/TheBooleanJulian) • Part of the Miku bot fleet 🎤*
+<div align="center">
+<sub>Built by <a href="https://github.com/TheBooleanJulian">@TheBooleanJulian</a></sub>
+</div>
