@@ -8,7 +8,7 @@
 ![Telegram](https://img.shields.io/badge/-Telegram-26A5E4?logo=telegram&logoColor=white)
 ![Claude](https://img.shields.io/badge/-Claude%20API-D97757)
 ![Zeabur](https://img.shields.io/badge/-Zeabur-6C5CE7)
-![License](https://img.shields.io/badge/license-MIT-00D4C8.svg)
+![License](https://img.shields.io/badge/license-AGPLv3%20%2B%20Commercial-00D4C8.svg)
 
 </div>
 
@@ -79,6 +79,10 @@ dontkenadoxx/
 
 Deployed on Zeabur via GitHub Actions CI/CD. Push to `dev` triggers a smoke test, auto-merges to `main`, and Zeabur deploys from there. Set `TELEGRAM_BOT_TOKEN` and `ANTHROPIC_API_KEY` in the Zeabur dashboard environment variables.
 
+## Screenshots
+
+_Screenshots coming soon._
+
 ## Status / Roadmap
 
 - [x] 10-category OSINT analysis via Claude Vision
@@ -94,7 +98,10 @@ Deployed on Zeabur via GitHub Actions CI/CD. Push to `dev` triggers a smoke test
 
 ## License
 
-MIT — use freely, credit appreciated.
+This project is dual licensed.
+
+- Community Edition — [GNU Affero General Public License v3 (AGPLv3)](LICENSE). Free to use, modify, and self-host. If you distribute a modified version or run it as a network service, you must make the corresponding source available.
+- Commercial License — for organisations that want to embed, modify, or distribute this software without AGPLv3's obligations. See [COMMERCIAL-LICENSE.md](COMMERCIAL-LICENSE.md).
 
 ---
 
